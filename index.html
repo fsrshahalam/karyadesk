@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaryaDesk — Final Year Project Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:     #0f2027;
+    --navy-2:   #1e3a5f;
+    --blue:     #2563eb;
+    --blue-l:   #3b82f6;
+    --blue-xl:  #93c5fd;
+    --indigo:   #4f46e5;
+    --sky:      #e0f0ff;
+    --sky-2:    #f0f7ff;
+    --white:    #ffffff;
+    --offwhite: #f8fafc;
+    --slate:    #475569;
+    --muted:    #94a3b8;
+    --border:   #e2e8f0;
+    --gold:     #b45309;
+    --gold-l:   #f59e0b;
+    --teal:     #0d9488;
+    --emerald:  #059669;
+    --rose:     #e11d48;
+    --radius:   16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--navy);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAVIGATION ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 12px rgba(15,32,39,0.06);
+    transition: padding 0.3s;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--blue), var(--indigo));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  }
+
+  .nav-logo-icon svg { width: 18px; height: 18px; color: #fff; }
+
+  .nav-wordmark {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav-cta {
+    background: var(--blue) !important;
+    color: #fff !important;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
+    text-decoration: none;
+  }
+
+  .nav-cta:hover {
+    background: #1d4ed8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37,99,235,0.35) !important;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 40px 80px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #f0f7ff 0%, #ffffff 50%, #f5f3ff 100%);
+  }
+
+  .hero-blob-1 {
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(37,99,235,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-blob-2 {
+    position: absolute;
+    bottom: -100px; left: -80px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(79,70,229,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(37,99,235,0.12) 1px, transparent 1px);
+    background-size: 36px 36px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(37,99,235,0.08);
+    border: 1px solid rgba(37,99,235,0.18);
+    border-radius: 999px;
+    padding: 7px 18px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+
+  .hero-badge-dot {
+    width: 6px; height: 6px;
+    background: var(--blue-l);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.75); }
+  }
+
+  .hero-h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(46px, 7.5vw, 84px);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -2px;
+    color: var(--navy);
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.35s forwards;
+  }
+
+  .hero-h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--blue), var(--indigo));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: -0.3px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.45s forwards;
+  }
+
+  .hero-desc {
+    font-size: clamp(15px, 1.8vw, 18px);
+    font-weight: 400;
+    color: var(--slate);
+    line-height: 1.75;
+    max-width: 600px;
+    margin: 0 auto 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.55s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--blue), var(--indigo));
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 8px 28px rgba(37,99,235,0.30);
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(37,99,235,0.38);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    color: var(--navy);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 13px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(15,32,39,0.06);
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--blue-l);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.12);
+    transform: translateY(-1px);
+  }
+
+  .hero-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 72px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.85s forwards;
+  }
+
+  .stat-item {
+    flex: 1;
+    min-width: 140px;
+    text-align: center;
+    padding: 0 32px;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--blue);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── SECTION COMMON ── */
+  section { position: relative; z-index: 1; }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 100px 40px;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--blue);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding: 4px 12px;
+    background: rgba(37,99,235,0.07);
+    border-radius: 4px;
+    border: 1px solid rgba(37,99,235,0.15);
+  }
+
+  .section-h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .section-h2 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--blue), var(--indigo));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-lead {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--slate);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* ── FEATURES ── */
+  .features-section { background: var(--offwhite); }
+
+  .features-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 56px;
+    flex-wrap: wrap;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .feature-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: 0 2px 12px rgba(15,32,39,0.04);
+    transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .feature-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.25s, border-color 0.25s;
+  }
+
+  .feature-card:hover {
+    box-shadow: 0 12px 36px rgba(37,99,235,0.10);
+    border-color: rgba(37,99,235,0.25);
+    transform: translateY(-4px);
+  }
+
+  .feature-card.large {
+    grid-column: span 2;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    background: linear-gradient(135deg, #eef2ff 0%, #f0f7ff 100%);
+    border-color: rgba(79,70,229,0.15);
+  }
+
+  .feature-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: 20px;
+  }
+
+  .feature-card.large .feature-icon { margin-bottom: 0; }
+  .feature-icon svg { width: 22px; height: 22px; }
+
+  .ic-blue    { background: #dbeafe; color: var(--blue); }
+  .ic-indigo  { background: #e0e7ff; color: var(--indigo); }
+  .ic-teal    { background: #ccfbf1; color: #0f766e; }
+  .ic-gold    { background: #fef3c7; color: #b45309; }
+  .ic-rose    { background: #ffe4e6; color: #e11d48; }
+  .ic-emerald { background: #d1fae5; color: #059669; }
+
+  .feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--slate);
+    line-height: 1.7;
+  }
+
+  .feature-tag {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+  }
+
+  /* ── WORKFLOW ── */
+  .workflow-section { background: var(--white); }
+
+  .workflow-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .workflow-steps { display: flex; flex-direction: column; gap: 0; }
+
+  .workflow-step {
+    display: flex;
+    gap: 20px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateX(-18px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .workflow-step.visible { opacity: 1; transform: translateX(0); }
+  .workflow-step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--blue);
+    background: #dbeafe;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    width: 32px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 5px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--slate);
+    line-height: 1.65;
+  }
+
+  /* Mock UI */
+  .mock-panel {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(15,32,39,0.10), 0 4px 16px rgba(37,99,235,0.06);
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+    transition: opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s;
+  }
+
+  .mock-panel.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+  .mock-topbar {
+    background: #f8fafc;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mock-dots { display: flex; gap: 6px; }
+  .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mock-dot:nth-child(1) { background: #ff5f57; }
+  .mock-dot:nth-child(2) { background: #ffbd2e; }
+  .mock-dot:nth-child(3) { background: #28ca41; }
+
+  .mock-url {
+    flex: 1;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .mock-body { padding: 18px; background: var(--offwhite); }
+
+  .mock-header-bar {
+    background: linear-gradient(135deg, #0f2027, #1e3a5f);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mock-brand-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  .mock-pill {
+    font-size: 9px; font-weight: 700;
+    padding: 3px 10px; border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+
+  .mock-pill-blue   { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .mock-pill-green  { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+  .mock-pill-amber  { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .mock-pill-rose   { background: #ffe4e6; color: #9f1239; border: 1px solid #fecdd3; }
+
+  .mock-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+
+  .mock-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 4px rgba(15,32,39,0.04);
+  }
+
+  .mock-card-label { font-size: 8px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .mock-card-value { font-size: 22px; font-weight: 800; color: var(--blue); line-height: 1; }
+
+  .mock-progress { margin-bottom: 12px; }
+  .mock-progress-label { display: flex; justify-content: space-between; font-size: 9px; font-weight: 600; color: var(--slate); margin-bottom: 6px; }
+  .mock-progress-bar { height: 6px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+  .mock-progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--blue), var(--indigo)); }
+
+  .mock-list { display: flex; flex-direction: column; gap: 6px; }
+  .mock-list-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 9px 12px;
+    box-shadow: 0 1px 3px rgba(15,32,39,0.03);
+  }
+
+  .mock-avatar {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--blue), var(--indigo));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; color: #fff;
+  }
+
+  .mock-text { flex: 1; }
+  .mock-text-name { font-size: 10px; font-weight: 600; color: var(--navy); }
+  .mock-text-sub  { font-size: 8px; color: var(--muted); }
+
+  /* ── ROLES ── */
+  .roles-section { background: var(--sky-2); }
+
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+  }
+
+  .role-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 36px 30px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(15,32,39,0.06);
+    border: 1.5px solid var(--border);
+  }
+
+  .role-card.visible { opacity: 1; transform: translateY(0); }
+
+  .role-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+  }
+
+  .role-student::before    { background: linear-gradient(90deg, var(--blue), var(--indigo)); }
+  .role-supervisor::before { background: linear-gradient(90deg, var(--indigo), #7c3aed); }
+  .role-admin::before      { background: linear-gradient(90deg, var(--gold-l), #f97316); }
+
+  .role-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 22px;
+  }
+
+  .role-student  .role-icon { background: #dbeafe; }
+  .role-supervisor .role-icon { background: #ede9fe; }
+  .role-admin    .role-icon { background: #fef3c7; }
+  .role-icon svg { width: 24px; height: 24px; }
+
+  .role-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--navy); margin-bottom: 10px;
+  }
+
+  .role-desc {
+    font-size: 14px; font-weight: 400;
+    color: var(--slate); line-height: 1.7; margin-bottom: 22px;
+  }
+
+  .role-features { display: flex; flex-direction: column; gap: 9px; }
+
+  .role-feat {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: var(--slate); line-height: 1.5;
+  }
+
+  .role-feat-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 7px;
+  }
+
+  .role-student    .role-feat-dot { background: var(--blue); }
+  .role-supervisor .role-feat-dot { background: var(--indigo); }
+  .role-admin      .role-feat-dot { background: var(--gold-l); }
+
+  /* ── TECH STRIP ── */
+  .tech-strip {
+    padding: 64px 40px;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .tech-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 28px;
+  }
+
+  .tech-list {
+    display: flex; align-items: center;
+    justify-content: center; gap: 48px; flex-wrap: wrap;
+  }
+
+  .tech-item {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--slate); font-size: 13px; font-weight: 500;
+  }
+
+  .tech-item svg { width: 20px; height: 20px; color: var(--blue-l); }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 120px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #eef2ff 0%, #f0f7ff 60%, #ede9fe 100%);
+  }
+
+  .cta-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px; height: 500px;
+    background: radial-gradient(ellipse, rgba(37,99,235,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(37,99,235,0.10) 1px, transparent 1px);
+    background-size: 32px 32px; pointer-events: none;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .cta-inner { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+
+  .cta-h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 6vw, 60px);
+    font-weight: 900; color: var(--navy);
+    line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 20px;
+  }
+
+  .cta-h2 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--blue), var(--indigo));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cta-desc {
+    font-size: 17px; font-weight: 400;
+    color: var(--slate); line-height: 1.7; margin-bottom: 44px;
+  }
+
+  .access-note {
+    margin-top: 22px; font-size: 12px; color: var(--muted);
+    font-weight: 500; letter-spacing: 0.04em;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+
+  .access-note::before, .access-note::after {
+    content: ''; display: block; height: 1px; width: 40px; background: var(--border);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 48px;
+    border-top: 1px solid var(--border);
+    background: var(--white);
+    display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 900;
+    color: var(--navy); opacity: 0.4;
+  }
+
+  .footer-copy { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.7; }
+  .footer-institution { font-size: 11px; color: var(--muted); text-align: right; line-height: 1.6; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.22s; }
+
+  /* Stealth Link Styles */
+  .scroll-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--slate);
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .scroll-link:hover { color: var(--blue); }
+
+  /* ── EXTRA UI MOCKUPS ── */
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 60px;
+  }
+
+  /* Editor & AI Elements */
+  .mock-editor-box {
+    background: #fff; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px; font-size: 10px; line-height: 1.7; color: var(--slate);
+    margin-bottom: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .mock-highlight { background: #fef08a; color: #854d0e; padding: 0 3px; border-radius: 3px; font-weight: 500; }
+  
+  .mock-ai-box {
+    background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+    border: 1px solid #99f6e4; border-radius: 8px; padding: 12px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .mock-ai-icon {
+    width: 22px; height: 22px; background: #0d9488; color: #fff;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  /* Supervisor Rubric Elements */
+  .mock-rubric-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; background: #fff; border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 8px; font-size: 10px; font-weight: 600; color: var(--navy);
+  }
+  .mock-checkbox {
+    width: 16px; height: 16px; border-radius: 4px; background: var(--blue);
+    display: flex; align-items: center; justify-content: center; color: #fff;
+  }
+  .mock-btn-group { display: flex; gap: 10px; margin-top: 16px; }
+  .mock-btn {
+    flex: 1; padding: 10px; text-align: center; border-radius: 6px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .mock-btn-approve { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+  .mock-btn-revise { background: #ffe4e6; color: #9f1239; border: 1px solid #fecdd3; }
+
+  /* ── MOBILE RESPONSIVENESS UPGRADES ── */
+  @media (max-width: 900px) {
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .workflow-grid { grid-template-columns: 1fr; gap: 60px; }
+    .showcase-grid { grid-template-columns: 1fr; }
+    .feature-card.large { grid-column: span 1; flex-direction: column; }
+  }
+
+  @media (max-width: 600px) {
+    /* Fix the Navigation */
+    nav { padding: 14px 20px !important; }
+    .nav-links span { display: none; } /* Hides just the scroll links */
+    .nav-links { gap: 12px; display: flex; } /* Keeps the 'Open App' button visible */
+
+    /* Fix Spacing & Typography */
+    .section-inner { padding: 60px 20px; }
+    .hero { padding: 120px 20px 60px; }
+    .hero-h1 { font-size: 42px; line-height: 1.1; }
+    .hero-desc { font-size: 15px; }
+
+    /* Make Buttons Thumb-Friendly */
+    .hero-actions { flex-direction: column; width: 100%; gap: 12px; }
+    .hero-actions a, .hero-actions span {
+      width: 100%;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* Fix the Stats Grid */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px 10px;
+      border-top: none;
+      margin-top: 50px;
+      padding-top: 0;
+    }
+    .stat-item { border-right: none; padding: 0; min-width: auto; }
+
+    /* Fix Layouts */
+    .features-grid { grid-template-columns: 1fr; }
+    .roles-grid { grid-template-columns: 1fr; }
+    .tech-list { gap: 20px; flex-direction: column; align-items: flex-start; padding-left: 20px;}
+    .tech-strip { padding: 40px 20px; }
+
+    /* Footer */
+    footer { flex-direction: column; text-align: center; gap: 20px; padding: 30px 20px; }
+    .footer-institution { text-align: center; }
+  }
+
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo-icon">
+      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+      </svg>
+    </div>
+    <span class="nav-wordmark">KaryaDesk</span>
+  </a>
+  <div class="nav-links">
+    <span class="scroll-link" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Features</span>
+    <span class="scroll-link" onclick="document.getElementById('workflow').scrollIntoView({behavior: 'smooth'})">How It Works</span>
+    <span class="scroll-link" onclick="document.getElementById('roles').scrollIntoView({behavior: 'smooth'})">Who It's For</span>
+    <a href="https://script.google.com/a/macros/uitm.edu.my/s/AKfycbwCg4EfsDKhNRUh2W8mb9ZP_T39WOULwwMtt3_kG4XbQKM6Q1wg1W0iqBgeRA7LNeNbjw/exec" class="nav-cta" target="_blank">Open App →</a>
+  </div>
+</nav>
+
+
+<div class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-blob-1"></div>
+  <div class="hero-blob-2"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Faculty of Sports Science and Recreation · UiTM
+    </div>
+
+    <h1 class="hero-h1">Final Year Projects,<br><em>Brilliantly Managed.</em></h1>
+    <p class="hero-sub-heading">Knowledge &amp; Academic Research Accelerator</p>
+    <p class="hero-desc">KaryaDesk brings students, supervisors, and administrators onto a single intelligent platform — streamlining chapter submissions, consultation logs, and academic progress from start to graduation.</p>
+
+    <div class="hero-actions">
+      <a href="https://script.google.com/a/macros/uitm.edu.my/s/AKfycbwCg4EfsDKhNRUh2W8mb9ZP_T39WOULwwMtt3_kG4XbQKM6Q1wg1W0iqBgeRA7LNeNbjw/exec" class="btn-primary" target="_blank">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Launch KaryaDesk
+      </a>
+
+      <span onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})" class="btn-secondary" style="cursor: pointer;">
+        Explore Features
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </span>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Role Portals</span></div>
+      <div class="stat-item"><span class="stat-num">5</span><span class="stat-label">FYP Chapters</span></div>
+      <div class="stat-item"><span class="stat-num">7+</span><span class="stat-label">Consultation Milestones</span></div>
+      <div class="stat-item"><span class="stat-num">AI</span><span class="stat-label">Grammar Auditor</span></div>
+    </div>
+  </div>
+</div>
+
+
+<section id="features" class="features-section">
+  <div class="section-inner">
+    <div class="features-header">
+      <div>
+        <span class="section-tag reveal">Core Features</span>
+        <h2 class="section-h2 reveal delay-1">Everything you need,<br><em>nothing you don't.</em></h2>
+      </div>
+      <p class="section-lead reveal delay-2">A focused toolkit built specifically for the UiTM FYP lifecycle — from the very first draft to the final approved chapter.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card large">
+        <div>
+          <div class="feature-icon ic-blue">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </div>
+        </div>
+        <div>
+          <p class="feature-title">Rich Chapter Drafting</p>
+          <p class="feature-desc">A full-featured rich text editor with formatting toolbar, word counter, and real-time draft saving. Draft, revise, and resubmit any of the 11 FYP chapter sections with contextual academic guidelines embedded right beside your workspace.</p>
+          <span class="feature-tag">Built-in Academic Guidelines</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon ic-indigo">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <p class="feature-title">AI Academic Checker</p>
+        <p class="feature-desc">Powered by Google Gemini, the AI auditor scans your draft for grammar issues and evaluates against chapter-specific checklists — generating a structured report instantly.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon ic-teal">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <p class="feature-title">Supervisor Review Flow</p>
+        <p class="feature-desc">Supervisors receive instant email notifications on submission. A dedicated full-screen evaluation panel lets them read the draft, tick a rubric checklist, write feedback, and record a decision — all in one place.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon ic-gold">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <p class="feature-title">Consultation Logs</p>
+        <p class="feature-desc">Students log consultation sessions with date, time, platform, duration, and agenda. Supervisors approve via email or the portal, building a transparent, verified timeline toward the 7-session requirement.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon ic-rose">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        </div>
+        <p class="feature-title">Google Doc Export</p>
+        <p class="feature-desc">Compile any combination of approved chapters into a single, professionally structured Google Doc — automatically saved to Drive and ready for final refinement or institutional submission.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon ic-emerald">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <p class="feature-title">Admin Control Centre</p>
+        <p class="feature-desc">Complete system oversight — manage users, supervisors, programs, and monitor every submission and consultation log across the entire faculty cohort with real-time analytics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="workflow" class="workflow-section">
+  <div class="section-inner">
+    <div class="workflow-grid">
+      <div>
+        <span class="section-tag reveal">How It Works</span>
+        <h2 class="section-h2 reveal delay-1">From registration<br>to <em>graduation.</em></h2>
+        <p class="section-lead reveal delay-2" style="margin-bottom: 44px;">A guided, structured process that keeps every stakeholder informed and every deadline on track.</p>
+
+        <div class="workflow-steps">
+          <div class="workflow-step">
+            <span class="step-num">01</span>
+            <div><p class="step-title">Register &amp; Select Supervisor</p><p class="step-desc">Students complete their academic profile, select a registered supervisor, and submit a registration request. Supervisors approve or reject directly in the portal — the student is notified by email.</p></div>
+          </div>
+          <div class="workflow-step">
+            <span class="step-num">02</span>
+            <div><p class="step-title">Draft Each Chapter Section</p><p class="step-desc">Write chapter sections in the rich editor with live academic guidelines. Save drafts at any time — only submit when you're ready for supervisor review.</p></div>
+          </div>
+          <div class="workflow-step">
+            <span class="step-num">03</span>
+            <div><p class="step-title">Supervisor Reviews &amp; Feedback</p><p class="step-desc">Supervisors evaluate submissions against a structured rubric, write detailed feedback, and mark chapters as Approved or Needs Revision. Students are notified instantly.</p></div>
+          </div>
+          <div class="workflow-step">
+            <span class="step-num">04</span>
+            <div><p class="step-title">Log Consultations &amp; Build Your Record</p><p class="step-desc">Every meeting is documented and approved, building a verified consultation timeline toward the minimum 7-session requirement for FYP completion.</p></div>
+          </div>
+          <div class="workflow-step">
+            <span class="step-num">05</span>
+            <div><p class="step-title">Compile &amp; Export Final Document</p><p class="step-desc">Select approved chapters, set your document title, and export a polished Google Doc to Drive — ready for final submission to your faculty.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mock-panel">
+        <div class="mock-topbar">
+          <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+          <div class="mock-url">script.google.com · KaryaDesk</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-header-bar">
+            <span class="mock-brand-text">KaryaDesk</span>
+            <span class="mock-pill mock-pill-blue">Student Workspace</span>
+          </div>
+          <div class="mock-cards">
+            <div class="mock-card"><div class="mock-card-label">FYP Progress</div><div class="mock-card-value">50%</div></div>
+            <div class="mock-card"><div class="mock-card-label">Consultations</div><div class="mock-card-value">4 / 7</div></div>
+          </div>
+          <div class="mock-progress">
+            <div class="mock-progress-label"><span>Chapter Completion</span><span>2 / 4 approved</span></div>
+            <div class="mock-progress-bar"><div class="mock-progress-fill" style="width:50%"></div></div>
+          </div>
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;">Recent Activity</div>
+          <div class="mock-list">
+            <div class="mock-list-item">
+              <div class="mock-avatar">A</div>
+              <div class="mock-text"><div class="mock-text-name">1.2 Problem Statement</div><div class="mock-text-sub">Approved by supervisor · 2 days ago</div></div>
+              <span class="mock-pill mock-pill-green">✓ Approved</span>
+            </div>
+            <div class="mock-list-item">
+              <div class="mock-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">A</div>
+              <div class="mock-text"><div class="mock-text-name">Chapter 2 · Literature Review</div><div class="mock-text-sub">Awaiting supervisor review</div></div>
+              <span class="mock-pill mock-pill-amber">Pending</span>
+            </div>
+            <div class="mock-list-item">
+              <div class="mock-avatar" style="background:linear-gradient(135deg,#f43f5e,#be123c)">A</div>
+              <div class="mock-text"><div class="mock-text-name">1.3 Research Objectives</div><div class="mock-text-sub">Revision requested · Please update</div></div>
+              <span class="mock-pill mock-pill-rose">Revise</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="workflow-section" style="padding-bottom: 80px;">
+  <div class="section-inner" style="padding-top: 0;">
+    
+    <div class="showcase-grid">
+      
+      <div>
+        <h3 class="step-title reveal">Gemini AI Auditor</h3>
+        <p class="step-desc reveal" style="margin-bottom: 24px;">Automated grammar checks and academic formatting feedback.</p>
+        
+        <div class="mock-panel reveal delay-1">
+          <div class="mock-topbar">
+            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+            <div class="mock-url">script.google.com · AI Assistant</div>
+          </div>
+          <div class="mock-body">
+            <div class="mock-header-bar" style="background: linear-gradient(135deg, #0f766e, #115e59);">
+              <span class="mock-brand-text">Chapter 1.2 Draft</span>
+              <span class="mock-pill" style="background: rgba(255,255,255,0.2); color: #fff; border:none;">Editing Mode</span>
+            </div>
+            
+            <div class="mock-editor-box">
+              The purpose of this study <span class="mock-highlight">are</span> to investigate the effects of plyometric training on sprint performance among university athletes. Previous research have shown <span class="mock-highlight">significant</span> improvements...
+            </div>
+
+            <div class="mock-ai-box">
+              <div class="mock-ai-icon">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div class="mock-text">
+                <div class="mock-text-name" style="color: #0f766e; margin-bottom: 4px;">AI Suggestion</div>
+                <div class="mock-text-sub" style="color: #115e59; line-height: 1.5;">Grammar: Change "are" to "is" (Subject-verb agreement). Consider replacing "significant" with a more precise metric if available.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="step-title reveal">Supervisor Evaluation</h3>
+        <p class="step-desc reveal" style="margin-bottom: 24px;">One-click rubric grading and streamlined approval workflow.</p>
+        
+        <div class="mock-panel reveal delay-2">
+          <div class="mock-topbar">
+            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+            <div class="mock-url">script.google.com · Evaluation</div>
+          </div>
+          <div class="mock-body">
+            <div class="mock-header-bar" style="background: linear-gradient(135deg, #3730a3, #312e81);">
+              <span class="mock-brand-text">Review: Ahmad Faizal</span>
+              <span class="mock-pill" style="background: #e0e7ff; color: #3730a3; border: none;">Ch. 3 Methodology</span>
+            </div>
+
+            <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;">Grading Rubric</div>
+            
+            <div class="mock-rubric-item">
+              <span>Research Design Clarity</span>
+              <div class="mock-checkbox"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+            </div>
+            <div class="mock-rubric-item">
+              <span>Sampling Method Justified</span>
+              <div class="mock-checkbox"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+            </div>
+            <div class="mock-rubric-item">
+              <span>APA 7 Citation Format</span>
+              <div class="mock-checkbox" style="background: #fff; border: 1px solid #cbd5e1;"></div>
+            </div>
+
+            <div class="mock-btn-group">
+              <div class="mock-btn mock-btn-revise">Request Revisions</div>
+              <div class="mock-btn mock-btn-approve">Approve Chapter</div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section id="roles" class="roles-section">
+  <div class="section-inner">
+    <div style="text-align:center;max-width:540px;margin:0 auto;">
+      <span class="section-tag reveal">Three Portals</span>
+      <h2 class="section-h2 reveal delay-1" style="margin:0 auto 14px;">One system,<br>built for <em>everyone.</em></h2>
+      <p class="section-lead reveal delay-2" style="margin:0 auto;">KaryaDesk automatically detects your role and presents the right workspace — no configuration needed.</p>
+    </div>
+
+    <div class="roles-grid">
+      <div class="role-card role-student">
+        <div class="role-icon"><svg fill="none" stroke="#2563eb" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg></div>
+        <p class="role-name">Student</p>
+        <p class="role-desc">Draft, track, and submit your Final Year Project chapters from first outline to final approval — all in one organised workspace.</p>
+        <div class="role-features">
+          <div class="role-feat"><span class="role-feat-dot"></span>Rich text chapter drafting with toolbar &amp; guidelines</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Pre-submission checklist for each chapter section</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>AI-powered grammar &amp; checklist audit</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Consultation log submission &amp; timeline</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Compile &amp; export final Google Doc</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Track feedback history across all reviews</div>
+        </div>
+      </div>
+
+      <div class="role-card role-supervisor">
+        <div class="role-icon"><svg fill="none" stroke="#4f46e5" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div>
+        <p class="role-name">Supervisor</p>
+        <p class="role-desc">Manage your supervisees with a clear overview of progress, pending reviews, and consultation approvals — without any administrative overhead.</p>
+        <div class="role-features">
+          <div class="role-feat"><span class="role-feat-dot"></span>Approve or reject student registration requests</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Full-screen draft evaluation panel</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Structured rubric checklist per chapter</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Approve or reject consultation logs</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Supervisee progress cards at a glance</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Automatic email notifications for all events</div>
+        </div>
+      </div>
+
+      <div class="role-card role-admin">
+        <div class="role-icon"><svg fill="none" stroke="#b45309" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <p class="role-name">Administrator</p>
+        <p class="role-desc">Complete control over the system — configure supervisors, manage programs, monitor all student progress, and maintain data integrity across the whole cohort.</p>
+        <div class="role-features">
+          <div class="role-feat"><span class="role-feat-dot"></span>Supervisor &amp; program directory management</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Full student progress oversight dashboard</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Manual supervisor assignment &amp; status override</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Submission audit log with status filters</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Consultation log oversight across all students</div>
+          <div class="role-feat"><span class="role-feat-dot"></span>Email activity log &amp; database health tools</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tech-strip">
+  <p class="tech-label">Powered by Google Workspace</p>
+  <div class="tech-list">
+    <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Google Apps Script</div>
+    <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18M4 3h16a1 1 0 011 1v16a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1z"/></svg>Google Sheets</div>
+    <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Google Docs</div>
+    <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Gmail Notifications</div>
+    <div class="tech-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Gemini AI</div>
+  </div>
+</div>
+
+
+<section class="cta-section">
+  <div class="cta-dots"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <h2 class="cta-h2 reveal">Ready to elevate<br>your <em>FYP journey?</em></h2>
+    <p class="cta-desc reveal delay-1">Sign in with your official UiTM email and get started in under two minutes. No setup. No downloads. Just your research, organised.</p>
+    <div class="hero-actions reveal delay-2">
+      <a href="https://script.google.com/a/macros/uitm.edu.my/s/AKfycbwCg4EfsDKhNRUh2W8mb9ZP_T39WOULwwMtt3_kG4XbQKM6Q1wg1W0iqBgeRA7LNeNbjw/exec" class="btn-primary" style="font-size:15px;padding:16px 40px;">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Open KaryaDesk Now
+      </a>
+    </div>
+    <p class="access-note">Requires a UiTM Google account · @uitm.edu.my or @student.uitm.edu.my</p>
+  </div>
+</section>
+
+
+<footer>
+  <span class="footer-brand">KaryaDesk</span>
+  <div class="footer-copy">
+    Designed &amp; Developed by <strong style="color:var(--navy);">Mohd Azim Nural Azhan</strong><br>
+    <span style="font-size:11px;">Based on the FYPSprint framework by <strong style="color:var(--navy);">Muhammad Faizal Kutip</strong></span>
+  </div>
+  <div class="footer-institution">Faculty of Sports Science &amp; Recreation<br>Universiti Teknologi MARA</div>
+</footer>
+
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .feature-card, .workflow-step, .role-card, .mock-panel')
+    .forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.feature-card').forEach((c, i) => { c.style.transitionDelay = (i * 0.08) + 's'; });
+  document.querySelectorAll('.workflow-step').forEach((s, i) => { s.style.transitionDelay = (i * 0.1) + 's'; });
+  document.querySelectorAll('.role-card').forEach((c, i)    => { c.style.transitionDelay = (i * 0.15) + 's'; });
+
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.padding = window.scrollY > 60 ? '12px 48px' : '18px 48px';
+  }, { passive: true });
+
+  function anim(el, end, dur, suf = '') {
+    let s = null;
+    requestAnimationFrame(function step(ts) {
+      if (!s) s = ts;
+      const p = Math.min((ts - s) / dur, 1);
+      el.textContent = Math.floor(p * end) + suf;
+      if (p < 1) requestAnimationFrame(step);
+    });
+  }
+
+  const statObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.stat-num').forEach(el => {
+          const t = el.textContent.trim();
+          if (t === '3')  anim(el, 3, 700);
+          if (t === '5')  anim(el, 5, 900);
+          if (t === '7+') { el.textContent = '0+'; anim(el, 7, 1000, '+'); }
+        });
+        statObs.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const hs = document.querySelector('.hero-stats');
+  if (hs) statObs.observe(hs);
+</script>
+
+</body>
+</html>
