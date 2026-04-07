@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a3a9a" />
+  <!-- Instant redirect fallback -->
+  <meta http-equiv="refresh" content="0;url=https://script.google.com/a/macros/uitm.edu.my/s/AKfycbwCg4EfsDKhNRUh2W8mb9ZP_T39WOULwwMtt3_kG4XbQKM6Q1wg1W0iqBgeRA7LNeNbjw/exec" />
+  <title>KaryaDesk</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f2057 0%, #1a3a9a 55%, #5b2d8e 100%);
+      color: #fff;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    .logo {
+      width: 80px; height: 80px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.16);
+      border: 1.5px solid rgba(255,255,255,0.22);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; font-weight: 900;
+      margin-bottom: 20px;
+      animation: pop .3s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes pop {
+      from { transform: scale(0.7); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    h1 { font-size: 28px; font-weight: 900; letter-spacing: .5px; margin-bottom: 6px; }
+    p  { font-size: 12px; color: rgba(255,255,255,0.55); letter-spacing: .1em; text-transform: uppercase; }
+    .loader {
+      margin-top: 36px;
+      width: 36px; height: 36px;
+      border: 3px solid rgba(255,255,255,0.18);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="logo">K</div>
+  <h1>KaryaDesk</h1>
+  <p>Redirecting…</p>
+  <div class="loader"></div>
+
+  <script>
+    window.location.replace("https://script.google.com/a/macros/uitm.edu.my/s/AKfycbwCg4EfsDKhNRUh2W8mb9ZP_T39WOULwwMtt3_kG4XbQKM6Q1wg1W0iqBgeRA7LNeNbjw/exec");
+  </script>
+</body>
+</html>
